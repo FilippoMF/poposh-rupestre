@@ -7,6 +7,18 @@ const image6 = document.querySelector('.random-image6');
 const image7 = document.querySelector('.random-image7');
 const image8 = document.querySelector('.random-image8');
 const container = document.querySelector('.single-image-container');
+const isIntro = container && container.classList.contains('intro-stage');
+
+// On the intro (landing) page the images roam an area 40% larger than the screen (centred on it),
+// so over time they sweep across the whole screen. storage/index.html keeps its original movement.
+function randomTransform(randomX, randomY, randomRotation) {
+    if (isIntro) {
+        const x = (Math.random() - 0.5) * 1.4 * window.innerWidth;
+        const y = (Math.random() - 0.5) * 1.4 * window.innerHeight;
+        return `translate(-50%, -50%) translate(${x}px, ${y}px) rotate(${randomRotation}deg)`;
+    }
+    return `translate(${randomX}px, ${randomY}px) rotate(${randomRotation}deg)`;
+}
 
 
 // object 1
@@ -27,7 +39,7 @@ function moveImage() {
     image.style.transition = 'transform 8s cubic-bezier(0.25, 1, 0.5, 1)';
 
     // Move the image to a new position with a random rotation
-    image.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotation}deg)`;
+    image.style.transform = randomTransform(randomX, randomY, randomRotation);
 }
 
 // Move the image every 2 seconds (slower movement)
@@ -52,7 +64,7 @@ function moveImage2() {
     image2.style.transition = 'transform 10s cubic-bezier(0.25, 1, 0.5, 1)';
 
     // Move the image to a new position with a random rotation
-    image2.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotation}deg)`;
+    image2.style.transform = randomTransform(randomX, randomY, randomRotation);
 }
 
 // Move the image every 2 seconds (slower movement)
@@ -76,7 +88,7 @@ function moveImage3() {
     image3.style.transition = 'transform 11s cubic-bezier(0.3, 0.9, 0.5, 1)';
 
     // Move the image to a new position with a random rotation
-    image3.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotation}deg)`;
+    image3.style.transform = randomTransform(randomX, randomY, randomRotation);
 }
 
 // Move the image every 2 seconds (slower movement)
@@ -100,7 +112,7 @@ function moveImage4() {
     image4.style.transition = 'transform 11s cubic-bezier(0.25, 0.7, 0.5, 1)';
 
     // Move the image to a new position with a random rotation
-    image4.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotation}deg)`;
+    image4.style.transform = randomTransform(randomX, randomY, randomRotation);
 }
 
 // Move the image every 2 seconds (slower movement)
@@ -124,7 +136,7 @@ function moveImage5() {
     image5.style.transition = 'transform 11s cubic-bezier(0.25, 0.7, 0.5, 1)';
 
     // Move the image to a new position with a random rotation
-    image5.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotation}deg)`;
+    image5.style.transform = randomTransform(randomX, randomY, randomRotation);
 }
 
 // Move the image every 2 seconds (slower movement)
@@ -148,7 +160,7 @@ function moveImage6() {
     image6.style.transition = 'transform 11s cubic-bezier(0.25, 0.7, 0.5, 1)';
 
     // Move the image to a new position with a random rotation
-    image6.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotation}deg)`;
+    image6.style.transform = randomTransform(randomX, randomY, randomRotation);
 }
 
 // Move the image every 2 seconds (slower movement)
@@ -172,7 +184,7 @@ function moveImage7() {
     image7.style.transition = 'transform 12s cubic-bezier(0.4, 0.0, 0.2, 1)';
 
     // Move the image to a new position with a random rotation
-    image7.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotation}deg)`;
+    image7.style.transform = randomTransform(randomX, randomY, randomRotation);
 }
 
 // Move the image every 2 seconds (slower movement)
@@ -196,7 +208,7 @@ function moveImage8() {
     image8.style.transition = 'transform 12s cubic-bezier(0.4, 0.0, 0.2, 1)';
 
     // Move the image to a new position with a random rotation
-    image8.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotation}deg)`;
+    image8.style.transform = randomTransform(randomX, randomY, randomRotation);
 }
 
 // Move the image every 2 seconds (slower movement)
@@ -241,5 +253,54 @@ document.addEventListener('DOMContentLoaded', function () {
       navGroups.forEach(function (g) { g.classList.remove('open'); });
       if (!isOpen) group.classList.add('open');
     });
+  });
+});
+
+// works pages: click a photo to see it full screen (close with ×, Esc, or a click outside the photo)
+
+document.addEventListener('DOMContentLoaded', function () {
+  var images = document.querySelectorAll('.image-grid img');
+  if (!images.length) return;
+
+  var overlay = document.createElement('div');
+  overlay.className = 'lightbox';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.innerHTML = '<button type="button" class="lightbox-close" aria-label="Close">&times;</button><img alt="">';
+  document.body.appendChild(overlay);
+
+  var bigImage = overlay.querySelector('img');
+  var closeButton = overlay.querySelector('.lightbox-close');
+  var lastFocused = null;
+
+  function open(img) {
+    lastFocused = img;
+    bigImage.src = img.currentSrc || img.src;
+    bigImage.alt = img.alt;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    closeButton.focus();
+  }
+
+  function close() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  images.forEach(function (img) {
+    img.tabIndex = 0;
+    img.addEventListener('click', function () { open(img); });
+    img.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(img); }
+    });
+  });
+
+  closeButton.addEventListener('click', close);
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) close();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) close();
   });
 });

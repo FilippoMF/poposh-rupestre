@@ -75,6 +75,7 @@ ul a:hover{
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  width: 100%;
 }
 
 .burger {
@@ -160,6 +161,14 @@ ul a:hover{
   min-width: 200px;
 }
 
+/* Desktop: the menu stays in place while the page scrolls (add class="nav-sticky") */
+.nav-sticky{
+  position: sticky;
+  top: 0;
+  min-height: 0;  /* only as tall as the menu, so the footer never pushes it up */
+  align-self: flex-start;
+}
+
 .cont-container{
   flex-grow: 1;  /* Takes up all available space */
   flex-direction: column;
@@ -199,11 +208,25 @@ ul a:hover{
   font-size: 1.4rem;
   font-weight: 600;
   margin-bottom: 1em;
+  flex: 1;
+  min-width: 0;
 }
 
+/* The name sits on one line when it fits, otherwise each word
+   goes on its own line (never 2 + 1). 11.4em is the width of
+   "FILIPPO MUZI FALCONI" on one line: update it if the name or font changes. */
 .nav-item1 a{
   text-decoration: none;
   color: black;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.25em;
+  line-height: 0.8;
+  font-style: italic;
+}
+
+.nav-item1 a span{
+  flex-basis: calc((11.4em - 100%) * 999);
 }
 
 .nav-item2 a{
@@ -234,6 +257,10 @@ ul a:hover{
     width: 100%;
     max-width: 100%;
     padding: 12px 20px;
+  }
+  .nav-sticky{
+    position: static;
+    align-self: auto;
   }
   .nav-header {
     flex-direction: row;
@@ -483,7 +510,7 @@ ul a:hover{
   top: 50%;
   left: 50%;
   width: 40%;
-  filter: sepia(20%) hue-rotate(-10deg) saturate(120%) opacity(60%);
+  filter: sepia(20%) hue-rotate(-10deg) saturate(120%) opacity(75%);
 }
 
 .conchiglia-image {
@@ -1050,3 +1077,231 @@ iframe.book{
 }
 
 
+
+/*******************************************/
+/** Alternative home page: image constellation (index2.html) **/
+
+/* Use the full width to the right of the menu, not centred on the viewport */
+.cont-container.constellation-page{
+  padding-right: 0;
+  justify-content: flex-start;
+}
+
+/* The constellation keeps a fixed shape (1 wide : 2.32 tall) and scales as a whole,
+   so the images never collide. Final works are the big images,
+   context and making images the small ones. */
+.constellation{
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  aspect-ratio: 1 / 2.32;
+  margin: 40px 0 80px;
+}
+
+/* Each image: --x/--y is its top-left corner, --w its width (all in % of the constellation) */
+.constellation .star{
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  display: block;
+  opacity: 0;
+  animation: star-in 1.2s ease forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+.constellation .star img{
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.constellation .star:hover img{
+  opacity: 0.85;
+}
+
+.star1{ --x: 80.9%; --y: 0%; --w: 11.2%; --delay: 0.6s; } /* snail, small */
+.star2{ --x: 8%; --y: 1.7%; --w: 34%; } /* Valjoanis, big */
+.star4{ --x: 66%; --y: 10.3%; --w: 22%; --delay: 0.9s; } /* Chair of Transitions, medium */
+.star5{ --x: 30%; --y: 28.4%; --w: 60%; } /* Portal, big */
+.star6{ --x: 2%; --y: 29.6%; --w: 20%; } /* hand with stones, small */
+.star7{ --x: 10%; --y: 50.9%; --w: 32%; } /* Ombelico di Venere, big */
+.star8{ --x: 48.2%; --y: 52.9%; --w: 17.5%; } /* dry grass, small */
+.star9{ --x: 56%; --y: 60.3%; --w: 34%; } /* plinth sculpture, big */
+.star10{ --x: 16%; --y: 76.7%; --w: 34%; } /* A Seat in the Marshes, big */
+.star11{ --x: 60.8%; --y: 88%; --w: 12.5%; } /* Wayfinders, small */
+
+@keyframes star-in{
+  from{ opacity: 0; transform: translateY(8px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .constellation .star{
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Phones: a taller constellation */
+@media (max-width: 480px){
+  .constellation{
+    width: calc(100% - 40px);
+    aspect-ratio: 1 / 5.64;
+    margin: 10px auto 40px;
+  }
+  .star1{ --x: 64.6%; --y: 0%; --w: 30.8%; }
+  .star2{ --x: 0%; --y: 1.8%; --w: 62%; }
+  .star4{ --x: 56%; --y: 19.9%; --w: 44%; }
+  .star5{ --x: 0%; --y: 32.3%; --w: 100%; }
+  .star6{ --x: 0%; --y: 21%; --w: 50.6%; }
+  .star7{ --x: 0%; --y: 46.5%; --w: 58%; }
+  .star8{ --x: 58.2%; --y: 49.4%; --w: 41.8%; }
+  .star9{ --x: 38%; --y: 64.2%; --w: 62%; }
+  .star10{ --x: 0%; --y: 83%; --w: 62%; }
+  .star11{ --x: 66.6%; --y: 90%; --w: 30.8%; }
+}
+
+/*******************************************/
+/** Intro / landing page (index.html): full-screen animation, the eye leads to index2.html **/
+
+.intro{
+  position: fixed;
+  inset: 10px; /* white frame around the screen */
+  overflow: hidden;
+}
+
+/* The photo and the moving images cover the whole screen,
+   keeping the photo's proportions (6048 x 4011, about 1.508 : 1) */
+.intro .intro-stage{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max(100vw, 150.8vh);
+  height: max(100vh, 66.3vw);
+  max-width: none;
+}
+
+/* Figure and eye move together, centred on the screen.
+   Same size as on index.html (40% of the photo), but never wider than 80% of a phone screen */
+.intro-figure{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(calc(0.4 * max(100vw, 150.8vh)), 80vw);
+}
+
+/* Desktop: a smaller figure (28% of the photo instead of 40%) */
+@media (min-width: 481px){
+  .intro-figure{
+    width: min(calc(0.28 * max(100vw, 150.8vh)), 80vw);
+  }
+}
+
+.intro-figure .central-image{
+  position: static;
+  transform: none;
+  width: 100%;
+  display: block;
+}
+
+/* The eye sits where it does on index.html, now measured on the figure */
+.intro-figure .conchiglia-image{
+  top: 27.9%;
+  left: 30%;
+  width: 37.5%;
+  cursor: pointer;
+}
+
+/* "ENTER" in the centre of the eye (it does not rotate with it).
+   Sized relative to the figure, so it scales with it. */
+.intro-figure{
+  container-type: inline-size;
+}
+
+.intro-enter-text{
+  position: absolute;
+  left: 48.75%;  /* centre of the eye: 30% + 37.5% / 2 */
+  top: 40.4%;    /* 27.9% + half the eye's height (25% of the figure) */
+  transform: translate(-50%, -50%);
+  font-size: 6cqw;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #7D1B31; /* colour of pippolino.png */
+  opacity: 0.8;
+  text-decoration: none;
+  pointer-events: none;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+}
+
+.intro-enter:hover .conchiglia-image{
+  filter: sepia(20%) hue-rotate(-10deg) saturate(120%) opacity(100%);
+}
+
+/*******************************************/
+/** Works pages: full-screen photo (lightbox), opened by clicking a photo in .image-grid **/
+
+.image-grid img{
+  cursor: zoom-in;
+}
+
+.lightbox{
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(14px) brightness(0.35);
+  backdrop-filter: blur(14px) brightness(0.35);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.lightbox.open{
+  opacity: 1;
+  visibility: visible;
+}
+
+/* The photo as large as the screen allows, without cropping */
+.lightbox img{
+  max-width: calc(100vw - 100px);
+  max-height: calc(100vh - 40px);
+  object-fit: contain;
+}
+
+.lightbox-close{
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: white;
+  font-family: inherit;
+  font-size: 2.6rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.lightbox-close:hover{
+  opacity: 0.7;
+}
+
+/* Keep the focus outline for keyboard users only */
+.lightbox-close:focus:not(:focus-visible){
+  outline: none;
+}
+
+@media (max-width: 480px){
+  .lightbox img{
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 80px);
+  }
+}
