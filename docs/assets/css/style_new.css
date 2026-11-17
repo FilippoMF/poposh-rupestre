@@ -1087,14 +1087,14 @@ iframe.book{
   justify-content: flex-start;
 }
 
-/* The constellation keeps a fixed shape (1 wide : 2.32 tall) and scales as a whole,
+/* The constellation keeps a fixed shape (1 wide : 2.96 tall) and scales as a whole,
    so the images never collide. Final works are the big images,
    context and making images the small ones. */
 .constellation{
   position: relative;
   width: 100%;
   max-width: 1400px;
-  aspect-ratio: 1 / 2.32;
+  aspect-ratio: 1 / 2.96;
   margin: 40px 0 80px;
 }
 
@@ -1121,16 +1121,19 @@ iframe.book{
   opacity: 0.85;
 }
 
-.star1{ --x: 80.9%; --y: 0%; --w: 11.2%; --delay: 0.6s; } /* snail, small */
-.star2{ --x: 8%; --y: 1.7%; --w: 34%; } /* Valjoanis, big */
-.star4{ --x: 66%; --y: 10.3%; --w: 22%; --delay: 0.9s; } /* Chair of Transitions, medium */
-.star5{ --x: 30%; --y: 28.4%; --w: 60%; } /* Portal, big */
-.star6{ --x: 2%; --y: 29.6%; --w: 20%; } /* hand with stones, small */
-.star7{ --x: 10%; --y: 50.9%; --w: 32%; } /* Ombelico di Venere, big */
-.star8{ --x: 48.2%; --y: 52.9%; --w: 17.5%; } /* dry grass, small */
-.star9{ --x: 56%; --y: 60.3%; --w: 34%; } /* plinth sculpture, big */
-.star10{ --x: 16%; --y: 76.7%; --w: 34%; } /* A Seat in the Marshes, big */
-.star11{ --x: 60.8%; --y: 88%; --w: 12.5%; } /* Wayfinders, small */
+.star1{ --x: 80.9%; --y: 0.0%; --w: 11.2%; --delay: 0.6s; } /* snail, small */
+.star2{ --x: 8%; --y: 1.3%; --w: 34%; } /* Valjoanis, big */
+.star4{ --x: 66%; --y: 8.1%; --w: 22%; --delay: 0.9s; } /* Chair of Transitions, medium */
+.star5{ --x: 30%; --y: 22.3%; --w: 60%; } /* Portal, big */
+.star6{ --x: 2%; --y: 23.2%; --w: 20%; } /* hand with stones, small */
+.star7{ --x: 10%; --y: 39.9%; --w: 32%; } /* Ombelico di Venere, big */
+.star8{ --x: 48.2%; --y: 41.5%; --w: 17.5%; } /* dry grass, small */
+.star9{ --x: 56%; --y: 47.3%; --w: 34%; } /* plinth sculpture, big */
+.star10{ --x: 16%; --y: 60.1%; --w: 34%; } /* A Seat in the Marshes, big */
+.star11{ --x: 60.8%; --y: 69.0%; --w: 15.5%; } /* Wayfinders, small */
+.star12{ --x: 65%; --y: 78.7%; --w: 30%; } /* Center of the Earth, medium */
+.star13{ --x: 12%; --y: 81.8%; --w: 34%; } /* Hands on, big */
+.star14{ --x: 62%; --y: 91.2%; --w: 17.5%; } /* Wayfinders, small */
 
 @keyframes star-in{
   from{ opacity: 0; transform: translateY(8px); }
@@ -1148,19 +1151,22 @@ iframe.book{
 @media (max-width: 480px){
   .constellation{
     width: calc(100% - 40px);
-    aspect-ratio: 1 / 5.64;
+    aspect-ratio: 1 / 7.2;
     margin: 10px auto 40px;
   }
-  .star1{ --x: 64.6%; --y: 0%; --w: 30.8%; }
-  .star2{ --x: 0%; --y: 1.8%; --w: 62%; }
-  .star4{ --x: 56%; --y: 19.9%; --w: 44%; }
-  .star5{ --x: 0%; --y: 32.3%; --w: 100%; }
-  .star6{ --x: 0%; --y: 21%; --w: 50.6%; }
-  .star7{ --x: 0%; --y: 46.5%; --w: 58%; }
-  .star8{ --x: 58.2%; --y: 49.4%; --w: 41.8%; }
-  .star9{ --x: 38%; --y: 64.2%; --w: 62%; }
-  .star10{ --x: 0%; --y: 83%; --w: 62%; }
-  .star11{ --x: 66.6%; --y: 90%; --w: 30.8%; }
+  .star1{ --x: 64.6%; --y: 0.0%; --w: 30.8%; }
+  .star2{ --x: 0%; --y: 1.4%; --w: 62%; }
+  .star4{ --x: 56%; --y: 15.6%; --w: 44%; }
+  .star5{ --x: 0%; --y: 25.3%; --w: 100%; }
+  .star6{ --x: 0%; --y: 16.4%; --w: 50.6%; }
+  .star7{ --x: 0%; --y: 36.4%; --w: 58%; }
+  .star8{ --x: 58.2%; --y: 38.7%; --w: 41.8%; }
+  .star9{ --x: 38%; --y: 50.3%; --w: 62%; }
+  .star10{ --x: 0%; --y: 65.0%; --w: 62%; }
+  .star11{ --x: 66.6%; --y: 70.5%; --w: 30.8%; }
+  .star12{ --x: 44%; --y: 79.7%; --w: 56%; }
+  .star13{ --x: 0%; --y: 86.7%; --w: 62%; }
+  .star14{ --x: 64%; --y: 91.7%; --w: 36%; }
 }
 
 /*******************************************/
