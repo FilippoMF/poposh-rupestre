@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://poposh-rupestre.com/sitemap.xml
